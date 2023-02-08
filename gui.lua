@@ -18,6 +18,10 @@ end)
     
 wait(0.1)
 
+repeat wait() until game:GetService("Players").LocalPlayer
+repeat wait() until game:GetService("Players").LocalPlayer.Character
+repeat wait() until game:GetService("Players").LocalPlayer.Character:FindFirstChild("FULLY_LOADED_CHAR") 
+
 local Players = game:GetService("Players");
 local StarterGui = game:GetService("StarterGui");
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
@@ -122,19 +126,11 @@ local Window = Rayfield:CreateWindow({
 	Name = "JMAN Alt Control",
 	LoadingTitle = "Made Selling Easier",
 	LoadingSubtitle = "by Eyedress",
-	ConfigurationSaving = {
-		Enabled = false,
-		FolderName = nil, -- Create a custom folder for your hub/game
-		FileName = "Big Hub"
-	},
-        Discord = {
-        	Enabled = false,
-        	Invite = "sirius", -- The Discord invite code, do not include discord.gg/
-        	RememberJoins = true -- Set this to false to make them join the discord every time they load it up
-        },
-	KeySystem = false, -- Set this to true to use our key system
 })
 
+function Chat(JMAN)
+    game.Players:Chat(getgenv().Settings.Prefix..JMAN)
+end
 
 local function CreateESP(target)
     local TOPHEADER = Instance.new("BillboardGui",game.Players:FindFirstChild(target).Character.UpperTorso)
@@ -583,6 +579,21 @@ local Button1 = MainTab:CreateButton({
 	end,
 })
 
+local Button1 = MainTab:CreateButton({
+	Name = "Force Reset",
+	Callback = function()
+		for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+			if v:IsA('MeshPart') or v:IsA('Part') then
+				v:Destroy()
+			end
+		end
+		for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+			if v:IsA('Accessory') then
+				v.Handle:Destroy()
+			end
+		end
+	end,
+})
 
 local Button1 = MainTab:CreateButton({
 	Name = "Legit?",
@@ -591,11 +602,10 @@ local Button1 = MainTab:CreateButton({
 	end,
 })
 
-
 local Dropdown = MainTab:CreateDropdown({
 	Name = "Teleports",
 	Options = {"Admin", "Bank", "Club", "Basketball", "Train", "School", "Jail"},
-	CurrentOption = "Admin",
+	CurrentOption = "Bank",
 	Flag = "Setup",
 	Callback = function(Option)
 		if Option == "Admin" then
@@ -793,16 +803,10 @@ local Toggle = Tab:CreateToggle({
 	Flag = "Drop",
 	Callback = function(State)
 		if State then
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."drop")
+			Chat("drop")
 		else
-			wait(2)
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."stop")
+			wait(1)
+			Chat("stop")
 		end
 	end,
 })
@@ -813,16 +817,10 @@ local Toggle2 = Tab:CreateToggle({
 	Flag = "DelCash",
 	Callback = function(State)
 		if State then
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."delcash on")
+			Chat("delcash on")
 		else
-			wait(2)
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."delcash off")
+			wait(1)
+			Chat("delcash off")
 		end
 	end,
 })
@@ -834,16 +832,10 @@ local Toggle3 = Tab:CreateToggle({
 	Flag = "Wallet",
 	Callback = function(State)
 		if State then
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."money show")
+			Chat("money show")
 		else
-			wait(2)
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."money hide")
+			wait(1)
+			Chat("money hide")
 		end
 	end,
 })
@@ -854,16 +846,10 @@ local Toggle4 = Tab:CreateToggle({
 	Flag = "Airlock",
 	Callback = function(State)
 		if State then
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."airlock")
+			Chat("airlock")
 		else
-			wait(2)
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."unlock")
+			wait(1)
+			Chat("unlock")
 		end
 	end,
 })
@@ -874,16 +860,10 @@ local Toggle5 = Tab:CreateToggle({
 	Flag = "Ground",
 	Callback = function(State)
 		if State then
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."ground")
+			Chat("ground")
 		else
-			wait(2)
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."unlock")
+			wait(1)
+			Chat("unlock")
 		end
 	end,
 })
@@ -894,16 +874,10 @@ local Toggle6 = Tab:CreateToggle({
 	Flag = "Hide",
 	Callback = function(State)
 		if State then
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."hide")
+			Chat("hide")
 		else
-			wait(2)
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."unhide")
+			wait(1)
+			Chat("unhide")
 		end
 	end,
 })
@@ -914,16 +888,10 @@ local Toggle7 = Tab:CreateToggle({
 	Flag = "Dance",
 	Callback = function(State)
 		if State then
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."vibe")
+			Chat("vibe")
 		else
-			wait(2)
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."unvibe")
+			wait(1)
+			Chat("unvibe")
 		end
 	end,
 })
@@ -931,20 +899,14 @@ local Toggle7 = Tab:CreateToggle({
 local Button1 = Tab:CreateButton({
 	Name = "Stop",
 	Callback = function()
-		local Prefix = getgenv().Settings.Prefix
-		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-		local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-		x.MessagePosted:fire(Prefix.."stop")
+		Chat("stop")
 	end,
 })
 
 local Button = Tab:CreateButton({
 	Name = "Reset",
 	Callback = function()
-		local Prefix = getgenv().Settings.Prefix
-		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-		local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-		x.MessagePosted:fire(Prefix.."reset")
+		Chat("reset")
 	end,
 })
 
@@ -953,44 +915,23 @@ local Label = Tab:CreateLabel("																																																	
 local Dropdown = Tab:CreateDropdown({
 	Name = "Setup",
 	Options = {"Admin", "Bank", "Club", "Basketball", "Train", "School", "Jail"},
-	CurrentOption = "Admin",
+	CurrentOption = "Bank",
 	Flag = "Setup",
 	Callback = function(Option)
 		if Option == "Admin" then
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."setup admin")
+			Chat("setup admin")
 		elseif Option == "Bank" then
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."setup bank")
+			Chat("setup bank")
 		elseif Option == "Club" then
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."setup club")
+			Chat("setup club")
 		elseif Option == "Basketball" then 
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."setup basketball")
+			Chat("setup basketball")
 		elseif Option == "Train" then
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."setup train")
+			Chat("setup train")
 		elseif Option == "School" then
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."setup school")
+			Chat("setup school")
 		elseif Option == "Jail" then
-			local Prefix = getgenv().Settings.Prefix
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-			local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-			x.MessagePosted:fire(Prefix.."setup jail")
+			Chat("setup jail")
 		end
 	end,
 })
@@ -1002,10 +943,7 @@ local Input = Tab:CreateInput({
 	PlaceholderText = "Username",
 	RemoveTextAfterFocusLost = false,
 	Callback = function(Text)
-		local Prefix = getgenv().Settings.Prefix
-		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-		local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-		x.MessagePosted:fire(Prefix.."bring "..Text)
+		Chat("bring "..Text)
 	end,
 })
 
@@ -1014,10 +952,7 @@ local Input = Tab:CreateInput({
 	PlaceholderText = "Amount",
 	RemoveTextAfterFocusLost = false,
 	Callback = function(Text)
-		local Prefix = getgenv().Settings.Prefix
-		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-		local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-		x.MessagePosted:fire(Prefix.."cdrop "..Text)
+		Chat("cdrop "..Text)
 	end,
 })
 
@@ -1026,10 +961,7 @@ local Input = Tab:CreateInput({
 	PlaceholderText = "Username",
 	RemoveTextAfterFocusLost = false,
 	Callback = function(Text)
-		local Prefix = getgenv().Settings.Prefix
-		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-		local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-		x.MessagePosted:fire(Prefix.."to "..Text)
+		Chat("to "..Text)
 	end,
 })
 
@@ -1038,10 +970,7 @@ local Input = Tab:CreateInput({
 	PlaceholderText = "Username",
 	RemoveTextAfterFocusLost = false,
 	Callback = function(Text)
-		local Prefix = getgenv().Settings.Prefix
-		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-		local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-		x.MessagePosted:fire(Prefix.."dupe "..Text)
+		Chat("dupe "..Text)
 	end,
 })
 
@@ -1050,10 +979,7 @@ local Input = Tab:CreateInput({
 	PlaceholderText = "Input",
 	RemoveTextAfterFocusLost = false,
 	Callback = function(Text)
-		local Prefix = getgenv().Settings.Prefix
-		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-		local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-		x.MessagePosted:fire(Prefix.."say "..Text)
+		Chat("say "..Text)
 	end,
 })
 
@@ -1062,10 +988,7 @@ local Input = Tab:CreateInput({
 	PlaceholderText = "Amount",
 	RemoveTextAfterFocusLost = false,
 	Callback = function(Text)
-		local Prefix = getgenv().Settings.Prefix
-		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("", "System")
-		local x = require(game.Players.LocalPlayer.PlayerScripts.ChatScript.ChatMain)
-		x.MessagePosted:fire(Prefix.."fps "..Text)
+		Chat("fps "..Text)
 	end,
 })
 
